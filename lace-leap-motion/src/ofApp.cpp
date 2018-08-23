@@ -101,19 +101,24 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofBackgroundGradient(ofColor(90, 90, 90), ofColor(30, 30, 30),  OF_GRADIENT_BAR);
+    if (bDrawGridBackground) {
+        ofBackgroundGradient(ofColor(90, 90, 90), ofColor(30, 30, 30),  OF_GRADIENT_BAR);
+    } else {
+        ofBackground(0);
+    }
 
     ofSetColor(200);
     ofDrawBitmapString("Lace - Leap Motion Prototype :)\nLeap Connected? " + ofToString(leap.isConnected()), 20, 20);
 
     cam.begin();
 
-    ofPushMatrix();
-    ofRotate(90, 0, 0, 1);
-    ofSetColor(20);
-    ofDrawGridPlane(800, 20, false);
-    ofPopMatrix();
-
+    if (bDrawGridBackground) {
+        ofPushMatrix();
+        ofRotateZDeg(90);
+        ofSetColor(20);
+        ofDrawGridPlane(800, 20, false);
+        ofPopMatrix();
+    }
 
     fingerType fingerTypes[] = {THUMB, INDEX, MIDDLE, RING, PINKY};
 

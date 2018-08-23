@@ -28,4 +28,5 @@ class ofApp : public ofBaseApp{
         ofEasyCam cam;
 
         ofColor mainColor;
+        bool bDrawGridBackground{false};
 };
