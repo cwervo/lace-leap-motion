@@ -15,7 +15,9 @@ void ofApp::setup(){
     // keep app receiving data from leap motion even when it's in the background
     leap.setReceiveBackgroundFrames(true);
 
-    cam.setOrientation(ofPoint(-20, 0, 0));
+    // TODO: August 25, try changing this orientation????
+    //    cam.setOrientation(ofPoint(-20, 0, 0));
+    cam.setOrientation(ofPoint(-90, 0, 0));
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_NORMALIZE);
@@ -108,7 +110,7 @@ void ofApp::draw(){
     }
 
     ofSetColor(200);
-    ofDrawBitmapString("Lace - Leap Motion Prototype :)\nLeap Connected? " + ofToString(leap.isConnected()), 20, 20);
+    ofDrawBitmapString("Lace - Leap Motion Prototype :)\n Num vertices: " + ofToString(leftHandLine.getVertices().size()) +"\nLeap Connected? " + ofToString(leap.isConnected()), 20, 20);
 
     cam.begin();
 
@@ -141,8 +143,6 @@ void ofApp::draw(){
         ofSetColor(255, 255, 0);
         ofDrawArrow(handPos, handPos + 100*handNormal);
 
-        ofPolyline polyline;
-
         for (int f=0; f<5; f++) {
             ofPoint mcp = simpleHands[i].fingers[ fingerTypes[f] ].mcp;  // metacarpal
             ofPoint pip = simpleHands[i].fingers[ fingerTypes[f] ].pip;  // proximal
@@ -161,33 +161,32 @@ void ofApp::draw(){
 
             ofSetColor(255, 0, 0);
             ofSetLineWidth(3);
-            // // Draw middle finger segment
-            // polyline.curveTo(mcp); // acting as control point
-            // polyline.curveTo(pip); // second-to-bottom
-            // polyline.curveTo(dip); // second-to-top
-            // polyline.curveTo(tip); // acting as control point
-            //
-            //
-            // // Draw top finger segment
-            // polyline.curveTo(mcp); // action as control point
-            // polyline.curveTo(dip); // second-to top
-            // polyline.curveTo(tip); // top
-            // polyline.curveTo(pip); // acting as control point
 
             ofDrawLine(mcp.x, mcp.y, mcp.z, pip.x, pip.y, pip.z);
             ofDrawLine(pip.x, pip.y, pip.z, dip.x, dip.y, dip.z);
             ofDrawLine(dip.x, dip.y, dip.z, tip.x, tip.y, tip.z);
+        }
 
-            // polyline.draw();
-            // polyline.clear();
+        if (isLeft) {
+            leftHandLine.addVertex(handPos);
+        } else {
+            rightHandLine.addVertex(handPos);
         }
     }
 
     ofPoint size = rightHandPos - leftHandPos;
 
+    if (bDrawBox) {
+        ofPushStyle();
+        ofSetColor(mainColor);
+        ofDrawBox(leftHandPos + ofPoint(size.x * 0.5, size.y * 0.5, 0), size.x, size.y, size.z);
+        ofPopStyle();
+    }
+
     ofPushStyle();
-    ofSetColor(mainColor);
-    ofDrawBox(leftHandPos + ofPoint(size.x * 0.5, size.y * 0.5, 0), size.x, size.y, size.z);
+    ofSetColor(ofColor::white);
+    leftHandLine.draw();
+    rightHandLine.draw();
     ofPopStyle();
 
     cam.end();

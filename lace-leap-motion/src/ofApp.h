@@ -29,4 +29,9 @@ class ofApp : public ofBaseApp{
 
         ofColor mainColor;
         bool bDrawGridBackground{false};
+
+        vector<ofPoint> points;
+        ofPolyline leftHandLine;
+        ofPolyline rightHandLine;
+        bool bDrawBox{false};
 };
