@@ -5,10 +5,9 @@
 
 
 void ofApp::setup(){
-
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    // ofSetLogLevel(OF_LOG_VERBOSE);
 
     leap.open();
 
@@ -24,6 +23,12 @@ void ofApp::setup(){
 
     mainColor = ofColor::fromHex(0x2EAFAC);
     mainColor.a = 255 * 0.5;
+
+    barlowFont.load("fonts/Barlow.ttf", 120);
+    font.load("fonts/VarelaRound-Regular.ttf", 120);
+
+    mainPanel.setup();
+    mainPanel.add(pinchDistance.setup("pinch distance", 5000, 0, 10000));
 }
 
 
@@ -160,17 +165,50 @@ void ofApp::draw(){
             ofDrawSphere(tip.x, tip.y, tip.z, 5);
 
             ofSetColor(255, 0, 0);
-            ofSetLineWidth(3);
+            ofSetLineWidth(5);
 
             ofDrawLine(mcp.x, mcp.y, mcp.z, pip.x, pip.y, pip.z);
             ofDrawLine(pip.x, pip.y, pip.z, dip.x, dip.y, dip.z);
             ofDrawLine(dip.x, dip.y, dip.z, tip.x, tip.y, tip.z);
         }
 
-        if (isLeft) {
-            leftHandLine.addVertex(handPos);
-        } else {
-            rightHandLine.addVertex(handPos);
+
+        if (bPinchTest) {
+            ofPushStyle();
+            ofPoint thumbTip = simpleHands[i].fingers[THUMB].tip;
+            ofPoint indexTip = simpleHands[i].fingers[INDEX].tip;
+            ofSetColor(ofColor::fromHex(0x2EAFAC));
+            ofSetLineWidth(3);
+            ofDrawLine(thumbTip, indexTip);
+            ofPoint pinchMidpoint = (thumbTip + indexTip) * 0.5;
+            ofSetColor(ofColor::white);
+            double dist = thumbTip.squareDistance(indexTip);
+
+            if (dist < pinchDistance) {
+                if (isLeft) {
+                    leftDrawing = true;
+                    leftLines.back().addVertex(pinchMidpoint);
+                } else {
+                    rightDrawing = true;
+                    rightLines.back().addVertex(pinchMidpoint);
+                }
+            } else {
+                if (isLeft) {
+                    if (leftDrawing) {
+                        leftLines.push_back(ofPolyline());
+                        leftDrawing = false;
+                    }
+                } else {
+                    if (rightDrawing) {
+                        rightLines.push_back(ofPolyline());
+                        rightDrawing = false;
+                    }
+                }
+            }
+
+            // barlowFont.drawString(ofToString(dist) + " HI", pinchMidpoint.x, pinchMidpoint.y);
+            ofLog() << to_string(dist);
+            ofPopStyle();
         }
     }
 
@@ -183,18 +221,27 @@ void ofApp::draw(){
         ofPopStyle();
     }
 
+    ofSetLineWidth(3);
     ofPushStyle();
-    ofSetColor(ofColor::white);
-    leftHandLine.draw();
-    rightHandLine.draw();
+    ofColor c = ofColor::fromHsb(fmod(ofGetFrameNum() * 0.8, 255), 255, 255);
+    c.a *= 0.8;
+    ofSetColor(c);
+    for (auto line : leftLines) { line.draw(); }
+    for (auto line : rightLines) { line.draw(); }
     ofPopStyle();
 
     cam.end();
+    mainPanel.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if (key == ' ') {
+        leftLines.clear();
+        rightLines.clear();
+        leftLines.push_back(ofPolyline());
+        rightLines.push_back(ofPolyline());
+    }
 }
 
 //--------------------------------------------------------------

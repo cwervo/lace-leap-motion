@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxLeapMotion2.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -34,4 +35,23 @@ class ofApp : public ofBaseApp{
         ofPolyline leftHandLine;
         ofPolyline rightHandLine;
         bool bDrawBox{false};
+        bool bPinchTest{true};
+
+        ofTrueTypeFont barlowFont;
+        struct LeapHand {
+            // ofPoint mcp = simpleHands[i].fingers[ fingerTypes[f] ].mcp;  // metacarpal
+            // ofPoint pip = simpleHands[i].fingers[ fingerTypes[f] ].pip;  // proximal
+            // ofPoint dip = simpleHands[i].fingers[ fingerTypes[f] ].dip;  // distal
+            // ofPoint tip = simpleHands[i].fingers[ fingerTypes[f] ].tip;  // fingertip
+        };
+        ofTrueTypeFont font;
+
+        vector<ofPolyline> leftLines{ofPolyline()};
+        vector<ofPolyline> rightLines{ofPolyline()};
+        bool leftDrawing;
+        bool rightDrawing;
+
+        ofxPanel mainPanel;
+        // ofxIntSlider pinchDistance;
+        ofxSlider<int> pinchDistance;
 };
