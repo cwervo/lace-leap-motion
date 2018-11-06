@@ -34,6 +34,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    shader.load("","shaders/waves.frag");
     fingersFound.clear();
 
     //here is a simple lace-leap-motion of getting the hands and drawing each finger and joint
@@ -232,6 +233,18 @@ void ofApp::draw(){
 
     cam.end();
     mainPanel.draw();
+
+    ofSetWindowTitle(to_string(ofGetFrameRate()));
+    shader.begin();
+    shader.setUniform1f("u_time", ofGetElapsedTimef());
+    shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
+    shader.setUniform2f("u_mouse", ofVec2f(ofGetMouseX(), ofGetMouseY()));
+
+    shader.setUniform3f("rightHandPos", rightHandPos);
+
+    ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
+    shader.end();
+
 }
 
 //--------------------------------------------------------------

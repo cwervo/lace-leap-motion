@@ -54,4 +54,6 @@ class ofApp : public ofBaseApp{
         ofxPanel mainPanel;
         // ofxIntSlider pinchDistance;
         ofxSlider<int> pinchDistance;
+
+        ofShader shader;
 };
