@@ -29,13 +29,10 @@ class ofApp : public ofBaseApp{
         ofEasyCam cam;
 
         ofColor mainColor;
-        bool bDrawGridBackground{false};
 
         vector<ofPoint> points;
         ofPolyline leftHandLine;
         ofPolyline rightHandLine;
-        bool bDrawBox{false};
-        bool bPinchTest{true};
 
         ofTrueTypeFont barlowFont;
         struct LeapHand {

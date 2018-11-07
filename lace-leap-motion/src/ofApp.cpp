@@ -2,7 +2,12 @@
 /* #include <math.h> */
 
 //--------------------------------------------------------------
-
+// consts ....
+const bool bDrawGridBackground{false};
+const bool bDrawBox{false};
+const bool bPinchTest{false};
+const bool bDrawHands{false};
+const bool bDrawShader{true};
 
 void ofApp::setup(){
     ofSetFrameRate(60);
@@ -122,7 +127,7 @@ void ofApp::draw(){
 
     if (bDrawGridBackground) {
         ofPushMatrix();
-        ofRotateZDeg(90);
+        // ofRotateZDeg(90);
         ofSetColor(20);
         ofDrawGridPlane(800, 20, false);
         ofPopMatrix();
@@ -172,7 +177,6 @@ void ofApp::draw(){
             ofDrawLine(pip.x, pip.y, pip.z, dip.x, dip.y, dip.z);
             ofDrawLine(dip.x, dip.y, dip.z, tip.x, tip.y, tip.z);
         }
-
 
         if (bPinchTest) {
             ofPushStyle();
@@ -234,17 +238,19 @@ void ofApp::draw(){
     cam.end();
     mainPanel.draw();
 
+    if (bDrawShader) {
+        shader.begin();
+        shader.setUniform1f("u_time", ofGetElapsedTimef());
+        shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
+        shader.setUniform2f("u_mouse", ofVec2f(ofGetMouseX(), ofGetMouseY()));
+
+        shader.setUniform3f("rightHandPos", rightHandPos);
+
+        ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
+        shader.end();
+    }
+
     ofSetWindowTitle(to_string(ofGetFrameRate()));
-    shader.begin();
-    shader.setUniform1f("u_time", ofGetElapsedTimef());
-    shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
-    shader.setUniform2f("u_mouse", ofVec2f(ofGetMouseX(), ofGetMouseY()));
-
-    shader.setUniform3f("rightHandPos", rightHandPos);
-
-    ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
-    shader.end();
-
 }
 
 //--------------------------------------------------------------
