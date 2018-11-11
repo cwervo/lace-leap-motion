@@ -21,11 +21,19 @@ float circleFromCenter(vec2 uv, float radius) {
 }
 
 void main(){
+    vec2 true_uv = gl_FragCoord.st/u_resolution;
+
+    // TODO:
+    // TODO:
+    // TODO:
+    // TODO:
+    // create a function that takes in true_uv & a hand position & returns the color (vec3? 4?) for that one wave stack
+    // then add them together, average the color, apply to circular alpha fade at the bottom, and actually set gl_FragColor
+
     // Scale the cofficient here by 10 to get wild jumps in movement
     vec2 handPosModifier = (rightHandPos.xz * 0.001);
     // flip down y-axis
     handPosModifier.x *= -1.0;
-    vec2 true_uv = gl_FragCoord.st/u_resolution;
     vec2 uv = true_uv + handPosModifier;
 
     vec3 col = vec3(uv,0.5+0.25*sin(u_time));
