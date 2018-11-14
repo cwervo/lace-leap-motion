@@ -8,6 +8,7 @@ const bool bDrawBox{false};
 const bool bPinchTest{false};
 const bool bDrawHands{false};
 const bool bDrawShader{true};
+const bool debug{false};
 
 void ofApp::setup(){
     ofSetFrameRate(60);
@@ -120,8 +121,10 @@ void ofApp::draw(){
         ofBackground(0);
     }
 
-    ofSetColor(200);
-    ofDrawBitmapString("Lace - Leap Motion Prototype :)\n Num vertices: " + ofToString(leftHandLine.getVertices().size()) +"\nLeap Connected? " + ofToString(leap.isConnected()), 20, 20);
+    if (debug) {
+        ofSetColor(200);
+        ofDrawBitmapString("Lace - Leap Motion Prototype :)\n Num vertices: " + ofToString(leftHandLine.getVertices().size()) +"\nLeap Connected? " + ofToString(leap.isConnected()), 20, 20);
+    }
 
     cam.begin();
 
@@ -149,71 +152,73 @@ void ofApp::draw(){
             rightHandPos = handPos;
         }
 
-        ofSetColor(0, 0, 255);
-        ofDrawSphere(handPos.x, handPos.y, handPos.z, 20);
-        ofSetColor(255, 255, 0);
-        ofDrawArrow(handPos, handPos + 100*handNormal);
+        if (bDrawHands) {
+            ofSetColor(0, 0, 255);
+            ofDrawSphere(handPos.x, handPos.y, handPos.z, 20);
+            ofSetColor(255, 255, 0);
+            ofDrawArrow(handPos, handPos + 100*handNormal);
 
-        for (int f=0; f<5; f++) {
-            ofPoint mcp = simpleHands[i].fingers[ fingerTypes[f] ].mcp;  // metacarpal
-            ofPoint pip = simpleHands[i].fingers[ fingerTypes[f] ].pip;  // proximal
-            ofPoint dip = simpleHands[i].fingers[ fingerTypes[f] ].dip;  // distal
-            ofPoint tip = simpleHands[i].fingers[ fingerTypes[f] ].tip;  // fingertip
+            for (int f=0; f<5; f++) {
+                ofPoint mcp = simpleHands[i].fingers[ fingerTypes[f] ].mcp;  // metacarpal
+                ofPoint pip = simpleHands[i].fingers[ fingerTypes[f] ].pip;  // proximal
+                ofPoint dip = simpleHands[i].fingers[ fingerTypes[f] ].dip;  // distal
+                ofPoint tip = simpleHands[i].fingers[ fingerTypes[f] ].tip;  // fingertip
 
-            ofSetColor(mainColor);
-            // ofDrawSphere(mcp.x, mcp.y, mcp.z, 6);
-            // ofDrawSphere(pip.x, pip.y, pip.z, 6);
-            // ofDrawSphere(dip.x, dip.y, dip.z, 6);
-            // ofDrawSphere(tip.x, tip.y, tip.z, 20 * sin(ofGetFrameNum() * 0.1));
-            ofDrawSphere(mcp.x, mcp.y, mcp.z, 5);
-            ofDrawSphere(pip.x, pip.y, pip.z, 5);
-            ofDrawSphere(dip.x, dip.y, dip.z, 5);
-            ofDrawSphere(tip.x, tip.y, tip.z, 5);
+                ofSetColor(mainColor);
+                // ofDrawSphere(mcp.x, mcp.y, mcp.z, 6);
+                // ofDrawSphere(pip.x, pip.y, pip.z, 6);
+                // ofDrawSphere(dip.x, dip.y, dip.z, 6);
+                // ofDrawSphere(tip.x, tip.y, tip.z, 20 * sin(ofGetFrameNum() * 0.1));
+                ofDrawSphere(mcp.x, mcp.y, mcp.z, 5);
+                ofDrawSphere(pip.x, pip.y, pip.z, 5);
+                ofDrawSphere(dip.x, dip.y, dip.z, 5);
+                ofDrawSphere(tip.x, tip.y, tip.z, 5);
 
-            ofSetColor(255, 0, 0);
-            ofSetLineWidth(5);
+                ofSetColor(255, 0, 0);
+                ofSetLineWidth(5);
 
-            ofDrawLine(mcp.x, mcp.y, mcp.z, pip.x, pip.y, pip.z);
-            ofDrawLine(pip.x, pip.y, pip.z, dip.x, dip.y, dip.z);
-            ofDrawLine(dip.x, dip.y, dip.z, tip.x, tip.y, tip.z);
-        }
-
-        if (bPinchTest) {
-            ofPushStyle();
-            ofPoint thumbTip = simpleHands[i].fingers[THUMB].tip;
-            ofPoint indexTip = simpleHands[i].fingers[INDEX].tip;
-            ofSetColor(ofColor::fromHex(0x2EAFAC));
-            ofSetLineWidth(3);
-            ofDrawLine(thumbTip, indexTip);
-            ofPoint pinchMidpoint = (thumbTip + indexTip) * 0.5;
-            ofSetColor(ofColor::white);
-            double dist = thumbTip.squareDistance(indexTip);
-
-            if (dist < pinchDistance) {
-                if (isLeft) {
-                    leftDrawing = true;
-                    leftLines.back().addVertex(pinchMidpoint);
-                } else {
-                    rightDrawing = true;
-                    rightLines.back().addVertex(pinchMidpoint);
-                }
-            } else {
-                if (isLeft) {
-                    if (leftDrawing) {
-                        leftLines.push_back(ofPolyline());
-                        leftDrawing = false;
-                    }
-                } else {
-                    if (rightDrawing) {
-                        rightLines.push_back(ofPolyline());
-                        rightDrawing = false;
-                    }
-                }
+                ofDrawLine(mcp.x, mcp.y, mcp.z, pip.x, pip.y, pip.z);
+                ofDrawLine(pip.x, pip.y, pip.z, dip.x, dip.y, dip.z);
+                ofDrawLine(dip.x, dip.y, dip.z, tip.x, tip.y, tip.z);
             }
 
-            // barlowFont.drawString(ofToString(dist) + " HI", pinchMidpoint.x, pinchMidpoint.y);
-            ofLog() << to_string(dist);
-            ofPopStyle();
+            if (bPinchTest) {
+                ofPushStyle();
+                ofPoint thumbTip = simpleHands[i].fingers[THUMB].tip;
+                ofPoint indexTip = simpleHands[i].fingers[INDEX].tip;
+                ofSetColor(ofColor::fromHex(0x2EAFAC));
+                ofSetLineWidth(3);
+                ofDrawLine(thumbTip, indexTip);
+                ofPoint pinchMidpoint = (thumbTip + indexTip) * 0.5;
+                ofSetColor(ofColor::white);
+                double dist = thumbTip.squareDistance(indexTip);
+
+                if (dist < pinchDistance) {
+                    if (isLeft) {
+                        leftDrawing = true;
+                        leftLines.back().addVertex(pinchMidpoint);
+                    } else {
+                        rightDrawing = true;
+                        rightLines.back().addVertex(pinchMidpoint);
+                    }
+                } else {
+                    if (isLeft) {
+                        if (leftDrawing) {
+                            leftLines.push_back(ofPolyline());
+                            leftDrawing = false;
+                        }
+                    } else {
+                        if (rightDrawing) {
+                            rightLines.push_back(ofPolyline());
+                            rightDrawing = false;
+                        }
+                    }
+                }
+
+                // barlowFont.drawString(ofToString(dist) + " HI", pinchMidpoint.x, pinchMidpoint.y);
+                ofLog() << to_string(dist);
+                ofPopStyle();
+            }
         }
     }
 
@@ -236,7 +241,9 @@ void ofApp::draw(){
     ofPopStyle();
 
     cam.end();
-    mainPanel.draw();
+    if (debug) {
+        mainPanel.draw();
+    }
 
     if (bDrawShader) {
         shader.begin();
@@ -245,6 +252,7 @@ void ofApp::draw(){
         shader.setUniform2f("u_mouse", ofVec2f(ofGetMouseX(), ofGetMouseY()));
 
         shader.setUniform3f("rightHandPos", rightHandPos);
+        shader.setUniform3f("leftHandPos", leftHandPos);
 
         ofDrawRectangle(0,0,ofGetWidth(), ofGetHeight());
         shader.end();
