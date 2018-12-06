@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "lace-leap-motion.app"
-               BlueprintName = "lace-leap-motion"
-               ReferencedContainer = "container:lace-leap-motion.xcodeproj">
+               BuildableName = "LACE-2018-12-04-and-prior-and-prior.app"
+               BlueprintName = "LACE-2018-12-04-and-prior-and-prior"
+               ReferencedContainer = "container:LACE-2018-12-04-and-prior-and-prior.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "lace-leap-motion.app"
-            BlueprintName = "lace-leap-motion"
-            ReferencedContainer = "container:lace-leap-motion.xcodeproj">
+            BuildableName = "LACE-2018-12-04-and-prior-and-prior.app"
+            BlueprintName = "LACE-2018-12-04-and-prior-and-prior"
+            ReferencedContainer = "container:LACE-2018-12-04-and-prior-and-prior.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -52,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "lace-leap-motion.app"
-            BlueprintName = "lace-leap-motion"
-            ReferencedContainer = "container:lace-leap-motion.xcodeproj">
+            BuildableName = "LACE-2018-12-04-and-prior-and-prior.app"
+            BlueprintName = "LACE-2018-12-04-and-prior-and-prior"
+            ReferencedContainer = "container:LACE-2018-12-04-and-prior-and-prior.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "lace-leap-motion.app"
-            BlueprintName = "lace-leap-motion"
-            ReferencedContainer = "container:lace-leap-motion.xcodeproj">
+            BuildableName = "LACE-2018-12-04-and-prior-and-prior.app"
+            BlueprintName = "LACE-2018-12-04-and-prior-and-prior"
+            ReferencedContainer = "container:LACE-2018-12-04-and-prior-and-prior.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

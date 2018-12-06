@@ -5,10 +5,10 @@
 // consts ....
 const bool bDrawGridBackground{false};
 const bool bDrawBox{false};
-const bool bPinchTest{false};
-const bool bDrawHands{false};
-const bool bDrawShader{true};
-const bool debug{false};
+const bool bPinchTest{true};
+const bool bDrawHands{true};
+const bool bDrawShader{false};
+const bool debug{true};
 
 void ofApp::setup(){
     ofSetFrameRate(60);
@@ -43,7 +43,7 @@ void ofApp::update(){
     shader.load("","shaders/waves.frag");
     fingersFound.clear();
 
-    //here is a simple lace-leap-motion of getting the hands and drawing each finger and joint
+    //here is a simple LACE-2018-12-04-and-prior of getting the hands and drawing each finger and joint
     //the leap data is delivered in a threaded callback - so it can be easier to work with this copied hand data
 
     //if instead you want to get the data as it comes in then you can inherit ofxLeapMotion and implement the onFrame method.
